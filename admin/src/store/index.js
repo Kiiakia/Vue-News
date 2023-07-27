@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
+import createPersistedState from "vuex-persistedstate";  
 
+// 实现数据持久化
 export default createStore({
   state: {
     isGetterRouter: false,
@@ -19,5 +21,8 @@ export default createStore({
   actions: {
   },
   modules: {
-  }
+  },
+  plugins:[
+    createPersistedState({paths: ['isMenuCollapsed']})
+  ]
 })
