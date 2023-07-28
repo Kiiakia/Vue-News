@@ -138,6 +138,11 @@ const menuHasChildren = menuConfig.filter((index) => index.children);
 <style lang="scss">
 .menu {
   min-height: 100vh;
+  // 实现子菜单高亮 父菜单也高亮的效果
+  .el-sub-menu.is-active .el-sub-menu__title{
+    color: var(--el-color-primary) !important;
+  }
+  
 }
 
 </style>
