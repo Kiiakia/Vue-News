@@ -43,6 +43,8 @@
 import { loadFull } from "tsparticles";
 import { reactive, ref } from "vue";
 import router from "../router/index";
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 const loginFormRef = ref();
 
@@ -65,10 +67,23 @@ const submitForm = function (loginFormRef) {
     if (valid) {
       // 提交表单
       // 这里原本应该是验证登录操作，登陆成功后再进行下列操作
-      localStorage.setItem("token", "aaa");
-      router.push({
-        path: "index",
-      });
+      axios.post('/adminapi/user/login', loginForm)
+        .then(
+          res => {
+            console.log(res.data)
+            if(res.data.ActionType == 'OK') {
+              router.push({
+                path: "index",
+              });
+            }else {
+              ElMessage({
+                showClose: true,
+                message: '用户名与密码不匹配',
+                type: 'error',
+              })
+            }
+          }
+        );
     } else {
       // loginFormRef.resetFields();
       return false;

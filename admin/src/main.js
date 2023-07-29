@@ -5,6 +5,7 @@ import store from './store'
 import Particles from "particles.vue3";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import './util/token.axios'
 
 
 createApp(App).
