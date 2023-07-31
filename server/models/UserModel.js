@@ -10,10 +10,13 @@ let UserSchema = new mongoose.Schema({
         required:true
     },
     introduction:String,
-    sex: Number,
+    sex: {
+        type: Number,
+        default: 0 // 0:保密 1：男 2：女
+    },
     avatar: String,
     role: {
-        type: Number,
+        type: Number,  // 1：admin 2：commonUser
     }
 });
 

@@ -5,7 +5,8 @@ import createPersistedState from "vuex-persistedstate";
 export default createStore({
   state: {
     isGetterRouter: false,
-    isMenuCollapsed:true
+    isMenuCollapsed:true,
+    userInfo:{}
   },
   getters: {
   },
@@ -16,6 +17,15 @@ export default createStore({
     changeMenuCollapsed(state) {
       console.log(state.isMenuCollapsed);
       state.isMenuCollapsed = !state.isMenuCollapsed;
+    },
+    changeUserInfo(state, value) {
+      state.userInfo = {
+        ...state.userInfo,
+        ...value
+      };
+    },
+    clearUserInfo(state) {
+      state.userInfo = {};
     }
   },
   actions: {
@@ -23,6 +33,6 @@ export default createStore({
   modules: {
   },
   plugins:[
-    createPersistedState({paths: ['isMenuCollapsed']})
+    createPersistedState({paths: ['isMenuCollapsed','userInfo']})
   ]
 })

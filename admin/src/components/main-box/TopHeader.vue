@@ -5,7 +5,7 @@
       <span>新闻后台管理网站</span>
     </div>
     <div class="right">
-      <span>欢迎admin登录</span>
+      <span>欢迎 {{store.state.userInfo?.username}} 登录</span>
       <el-dropdown>
         <el-icon :size="25"><User /></el-icon>
         <template #dropdown>
@@ -37,6 +37,7 @@ let logout = function() {
     router.push({
         path:'/login'
     });
+    store.commit('clearUserInfo');
 };
 </script>
 <style lang="scss">

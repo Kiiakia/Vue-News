@@ -45,7 +45,9 @@ import { reactive, ref } from "vue";
 import router from "../router/index";
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import {useStore} from 'vuex'
 
+const store = useStore();
 const loginFormRef = ref();
 
 const loginForm = reactive({
@@ -72,6 +74,8 @@ const submitForm = function (loginFormRef) {
           res => {
             console.log(res.data)
             if(res.data.ActionType == 'OK') {
+              // console.log(res.data);
+              store.commit('changeUserInfo', res.data.data);
               router.push({
                 path: "index",
               });

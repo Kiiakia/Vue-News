@@ -16,7 +16,14 @@ const userController = {
 
             res.header('Authorization', token);
             res.send({
-                ActionType: 'OK'
+                ActionType: 'OK',
+                data: {
+                    username: result[0].username,
+                    introduction:result[0].introduction,
+                    sex: result[0].sex,
+                    avatar: result[0].avatar,
+                    role: result[0].role
+                }
             });
         }else{
             res.send({
