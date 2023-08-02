@@ -6,6 +6,20 @@ const userService = {
             username:username,
             password:password
         })
+    },
+    updata:async({
+        _id,username, sex, introduction, avatar
+    }) => {
+        if(avatar){
+            return userModel.updateOne({_id}, {
+                username, sex, introduction, avatar
+            })
+        }else{
+            return userModel.updateOne({_id}, {
+                username, sex, introduction
+            })
+        }
+        
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
     <el-container>
       <LeftAside/>
-      <el-container direction="vertical">
+      <el-container direction="vertical" class="container">
         <TopHeader/>
         <el-main><router-view/></el-main>
       </el-container>
@@ -12,3 +12,9 @@
 import TopHeader from '../components/main-box/TopHeader.vue';
 import LeftAside from '../components/main-box/LeftAside.vue'
 </script>
+<style lang="scss" scoped>
+::v-deep .container {
+  height: calc(100vh - 50px);
+  margin-bottom: 0;
+}
+</style>

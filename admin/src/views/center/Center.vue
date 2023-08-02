@@ -53,20 +53,7 @@
             </el-form-item>
 
             <el-form-item label="头像" prop="avatar">
-              <el-upload
-                class="avatar-uploader"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-                :show-file-list="false"
-                :auto-upload="false"
-                :on-change="handleImgChange"
-              >
-                <img
-                  v-if="userForm.avatar"
-                  :src="userForm.avatar"
-                  class="avatar"
-                />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-              </el-upload>
+              <Upload :avatar="userForm.avatar" @change="handleImgChange"></Upload>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm"
@@ -80,20 +67,19 @@
   </div>
 </template>
 <script setup>
+import Upload from '../../components/upload/Upload'
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { ref, reactive } from "vue";
-import { Plus } from "@element-plus/icons-vue";
-import { useFormItem } from "element-plus";
-import axios from "axios";
+import { ElMessage } from "element-plus";
+import upload from "@/util/upload"
 const store = useStore();
 let userAvatarUrl = computed(() => {
   return store.state.userInfo.avatar
-    ? store.state.userInfo.avatar
+    ? 'http://localhost:3000'+store.state.userInfo.avatar
     : "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 });
 
-console.log(store.state.userInfo);
 const userFormRef = ref();
 const user = store.state.userInfo;
 const userForm = reactive({
@@ -124,23 +110,23 @@ const sexOptions = [
   },
 ];
 const handleImgChange = (img) => {
-  userForm.avatar = URL.createObjectURL(img.raw);
-  userForm.file = img.raw;
+  userForm.avatar = URL.createObjectURL(img);
+  userForm.file = img;
 };
 const submitForm = () => {
     // 这里要加value
     userFormRef.value.validate(
-        (valid) => {
+        async(valid) => {
             if(valid) {
-                let params = new FormData();
-                for(let i in userForm){
-                    params.append(i, userForm[i]);
+                let res = await upload('/adminapi/user/update', userForm);
+                if(res.ActionType === 'OK') {
+                  store.commit('changeUserInfo', res.data)
+                  ElMessage({
+                    message:'更新成功',
+                    type:'success'
+                  })
                 }
-                axios.post('/adminapi/user/update', params, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                 
             }
         }
     )
@@ -152,30 +138,5 @@ const submitForm = () => {
   .card {
     text-align: center;
   }
-}
-::v-deep .avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-::v-deep .avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-::v-deep .el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
-}
-
-.avatar {
-  width: 178px;
-  height: 178px;
 }
 </style>

@@ -31,6 +31,35 @@ const userController = {
                 errMsg: '用户名与密码不匹配'
             });
         }
+    },
+    update: async(req, res) => {
+        // console.log(req.body);
+        // console.log(req.file);
+        const {username, sex, introduction} = req.body;
+        // 不需要加上public，加上反而不能访问
+        const avatar = req.file ? `/avatarImg/${req.file.filename}`: "";
+        const {authorization} = req.headers;
+        const token = authorization.split(' ')[1];
+        const _id = JWT.verify(token)._id;
+        await userService.updata({
+            _id,username, sex:Number(sex), introduction, avatar
+        })
+        if(avatar){
+            res.send({
+                ActionType: 'OK',
+                data:{
+                    username, sex:Number(sex), introduction, avatar
+                }
+            })
+        }else{
+            res.send({
+                ActionType: 'OK',
+                data:{
+                    username, sex:Number(sex), introduction
+                }
+            })
+        }
+        
     }
 }
 
