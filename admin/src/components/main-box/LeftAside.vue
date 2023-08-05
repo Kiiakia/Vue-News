@@ -68,18 +68,21 @@ const menuConfig = [
     path: "/index",
     icon: { icon: HomeFilled, text: "首页" },
     label: "首页",
+    adminAuth:false,
   },
   {
     name: "center",
     path: "/center",
     icon: { icon: Avatar, text: "个人中心" },
     label: "个人中心",
+    adminAuth:false,
   },
   {
     name: "usermanage",
     path:'/user-manage',
     icon: { icon: UserFilled, text: "用户管理" },
     label: "用户管理",
+    adminAuth:true,
     children: [
       {
         name: "userAdd",
@@ -96,6 +99,7 @@ const menuConfig = [
   {
     name: "newsmanage",
     path:'/news-manage',
+    adminAuth:false,
     icon: { icon: Reading, text: "新闻管理" },
     label: "新闻管理",
     children: [
@@ -114,6 +118,7 @@ const menuConfig = [
   {
     name: "productmanage",
     path:'/product-manage',
+    adminAuth:false,
     icon: { icon: Pointer, text: "产品管理" },
     label: "产品管理",
     children: [
@@ -130,8 +135,15 @@ const menuConfig = [
     ],
   },
 ];
+const isAdminAuth = (item) => {
+  if(item.adminAuth) {
+    return store.state.userInfo.role === 1
+  }
+  return true
+}
 const menuNoChildren = menuConfig.filter((index) => !index.children);
-const menuHasChildren = menuConfig.filter((index) => index.children);
+const menuHasChildren = menuConfig.filter((index) => isAdminAuth(index) && index.children);
+
 // 为啥下面的不行？？ 因为一旦解析之后，里面的实际上就是一个字面量，根本不会改变，更别说监听到了
 // let isCollapsed = ref(store.state.isMenuCollapsed);
 </script>

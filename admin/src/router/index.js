@@ -29,14 +29,30 @@ const router = createRouter({
   routes
 })
 
+const isAdminAuth = (item) => {
+  if(item.adminAuth) {
+    return store.state.userInfo.role === 1
+  }
+  return true
+}
+
 // 动态路由配置更新
 const setRouterConfig = function() {
+  if(!router.hasRoute('mainbox')) {
+    router.addRoute( {
+      path:'/mainbox',
+      name:'mainBox',
+      component:MainBox
+    });
+  }
   routerConfig.forEach(item => {
-    router.addRoute('mainBox', item);
+    isAdminAuth(item) && router.addRoute('mainBox', item);
   });
   // 第一次之后改变GetterRouter的值
   store.commit('changeGetterRouter', true);
 }
+
+
 
 // 路由守卫 ———— 有一些路由只有在登录状态才能看见 管理员与普通用户的也不相同
 router.beforeEach(
@@ -54,6 +70,7 @@ router.beforeEach(
         // 登录成功
         if(!store.state.isGetterRouter){
           // 第一次登录，动态配置路由
+          router.removeRoute('mainbox')
           setRouterConfig();
           next({
             path:to.fullPath

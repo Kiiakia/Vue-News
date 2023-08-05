@@ -59,7 +59,39 @@ const userController = {
                 }
             })
         }
-        
+    },
+    add: async(req, res) => {
+        const {username, sex, introduction, password, role} = req.body;
+        // 不需要加上public，加上反而不能访问
+        const avatar = req.file ? `/avatarImg/${req.file.filename}`: "";
+
+        await userService.add({
+            username, sex:Number(sex), introduction, avatar, password, role:Number(role)
+        })
+        res.send({
+            ActionType: 'OK'
+        });
+    },
+    getList: async(req, res) => {
+        let result = await userService.getList({_id:req.params.id});
+        res.send({
+            ActionType:'OK',
+            data:result
+        })
+    },
+    delList: async(req, res) => {
+        let id = req.params.id;
+        await userService.delList({_id:id});
+        res.send({
+            ActionType:'OK'
+        })
+    },
+    putList: async(req, res) => {
+        // console.log(req.body);
+        await userService.putList(req.body);
+        res.send({
+            ActionType:'OK'
+        })
     }
 }
 

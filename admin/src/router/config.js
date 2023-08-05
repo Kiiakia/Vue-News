@@ -20,11 +20,13 @@ const routerConfig = [
         component:Home
     },
     {
+        adminAuth:true,
         path:'/user-manage/useradd',
         name:'userAdd',
         component:UserAdd
     },
     {
+        adminAuth:true,
         path:'/user-manage/userlist',
         name:'userList',
         component:UserList

@@ -76,6 +76,8 @@ const submitForm = function (loginFormRef) {
             if(res.data.ActionType == 'OK') {
               // console.log(res.data);
               store.commit('changeUserInfo', res.data.data);
+              store.commit('changeGetterRouter', false);
+              // 重新配置路由
               router.push({
                 path: "index",
               });
