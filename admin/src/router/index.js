@@ -70,7 +70,9 @@ router.beforeEach(
         // 登录成功
         if(!store.state.isGetterRouter){
           // 第一次登录，动态配置路由
-          router.removeRoute('mainbox')
+          if(router.hasRoute('mainbox')){
+            router.removeRoute('mainbox')
+          }
           setRouterConfig();
           next({
             path:to.fullPath

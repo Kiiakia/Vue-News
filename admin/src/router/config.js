@@ -4,8 +4,10 @@ import UserAdd from '../views/user-manage/UserAdd.vue'
 import UserList from '../views/user-manage/UserList.vue'
 import NewsAdd from '../views/news-manage/NewsAdd.vue'
 import NewsList from '../views/news-manage/NewsList.vue'
+import NewsEdit from '../views/news-manage/NewsEdit'
 import ProductAdd from '../views/product-manage/ProductAdd.vue'
 import ProductList from '../views/product-manage/ProductList.vue'
+import ProductEdit from '../views/product-manage/ProductEdit'
 
 // 如果不加'/'，就是往父亲路由下面加的子路由，如果加了，全新开始
 const routerConfig = [
@@ -42,6 +44,11 @@ const routerConfig = [
         component:NewsList
     },
     {
+        path:'/news-manage/newsedit/:id',
+        name:'newsEdit',
+        component:NewsEdit
+    },
+    {
         path:'/product-manage/productadd',
         name:'productAdd',
         component:ProductAdd
@@ -50,6 +57,11 @@ const routerConfig = [
         path:'/product-manage/productlist',
         name:'productList',
         component:ProductList
+    },
+    {
+        path:'/product-manage/productedit/:id',
+        name:'productEdit',
+        component:ProductEdit
     },
     {
         path:'/',

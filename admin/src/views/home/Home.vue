@@ -13,7 +13,7 @@
         </el-col>
         <el-col :span="14">
           <h3 style="line-height: 100px">
-            欢迎 {{store.state.userInfo?.username}} 登录!
+            欢迎 {{ store.state.userInfo?.username }} 登录!
             {{ welcomeText }}
           </h3>
         </el-col>
@@ -26,8 +26,15 @@
         </div>
       </template>
       <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 text="2xl" justify="center">{{ item }}</h3>
+        <el-carousel-item v-for="item in loopData" :key="item._id">
+          <div
+            :style="{
+              backgroundImage: `url(http://localhost:3000${item.cover})`,
+              backgroundSize: 'cover'
+            }"
+          >
+            <h3 text="2xl" justify="center">{{ item.title }}</h3>
+          </div>
         </el-carousel-item>
       </el-carousel>
     </el-card>
@@ -36,13 +43,14 @@
 
 <script setup>
 import axios from "axios";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const loopData = ref([]);
 let userAvatarUrl = computed(() => {
   return store.state.userInfo.avatar
-    ? 'http://localhost:3000'+store.state.userInfo.avatar
+    ? "http://localhost:3000" + store.state.userInfo.avatar
     : "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 });
 let welcomeText = computed(() => {
@@ -50,6 +58,18 @@ let welcomeText = computed(() => {
     ? "早上好，祝您工作愉快。"
     : "下午好，喝杯咖啡提提神吧。";
 });
+
+onMounted(() => {
+  getData();
+});
+
+const getData = async () => {
+  const author = store.state.userInfo.username;
+  const res = await axios.get("/adminapi/product/list", {
+    params: { author },
+  });
+  loopData.value = res.data.data;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -57,18 +77,11 @@ let welcomeText = computed(() => {
   margin-top: 30px;
 }
 .el-carousel__item h3 {
-  color: #475669;
+  color: white;
   opacity: 0.75;
   line-height: 200px;
   margin: 0;
   text-align: center;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
 </style>
