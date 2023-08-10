@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var userRouter = require('./routes/admin/UserRouter');
 var newsRouter = require('./routes/admin/NewsRouter');
 var producrRouter = require('./routes/admin/ProductRouter')
+
+var webNewsRouter = require('./routes/web/NewsRouter');
+var webProducrRouter = require('./routes/web/ProductRouter')
 const JWT = require('./util/JWT');
 
 var app = express();
@@ -23,6 +26,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/webapi/news', webNewsRouter);
+app.use('/webapi/product',webProducrRouter);
 
 app.use((req, res, next) => {
   // console.log(req.headers);
